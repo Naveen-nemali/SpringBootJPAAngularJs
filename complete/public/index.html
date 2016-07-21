@@ -1,0 +1,20 @@
+<!doctype html>
+<html ng-app="myApp">
+	<head>
+		<title>Hello AngularJS</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    	<script src="hello.js"></script>
+	</head>
+
+	<body>
+		<div ng-controller="HelloController"> 
+			<div id="messageContainer">
+			   <p>The ID is {{greeting.pid}}</p>
+			   <p>The name is {{greeting.name}}</p>
+			   <p>The location is {{greeting.location}}</p>
+			</div>
+		</div>
+		
+		
+	</body>
+</html>

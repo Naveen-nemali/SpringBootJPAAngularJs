@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> 
+    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script> 
+</head>
+<body ng-app="postApp" ng-controller="postController">
+<div class="container">
+<div class="col-sm-8 col-sm-offset-2">
+    <div class="page-header"><h1>Post data using angularJS</h1></div>
+    <!-- FORM -->
+    <form name="userForm" ng-submit="submitForm()">
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" class="form-control" ng-model="person.name">
+        
+    </div>
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" ng-model="person.location">
+        
+    </div>
+	
+	
+	<div class="form-group">
+        <label>COuntry</label>
+        <input type="text" name="name" class="form-control" ng-model="person.Address.Country">
+        
+    </div>
+	
+	
+	<div class="form-group">
+        <label>House No</label>
+        <input type="text" name="name" class="form-control" ng-model="person.Address.houseNo">
+        
+    </div>
+	
+	<div class="form-group">
+        <label>street</label>
+        <input type="text" name="name" class="form-control" ng-model="person.Address.street">
+        
+    </div>
+	<div class="form-group">
+        <label>Locality</label>
+        <input type="text" name="name" class="form-control" ng-model="person.Address.locality">
+        
+    </div>
+	
+	<div class="form-group">
+        <label>POSTAL CODE</label>
+        <input type="text" name="name" class="form-control" ng-model="person.Address.postalCode">
+        
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+	
+</div>
+
+</div>
+</body>
+</html>
+
+<script>
+    // Defining angularjs application.
+    var postApp = angular.module('postApp', []);
+    // Controller function and passing $http service and $scope var.
+    postApp.controller('postController', function($scope, $http) {
+      // create a blank object to handle form data.
+	  alert('IN CONTROLLER');
+        $scope.person = {};
+		$scope.person.Address = {};
+      // calling our submit function.
+        $scope.submitForm = function() {
+		alert('in submit func');
+        // Posting data to php file
+		
+          var addressObj = { 
+			   "street" : $scope.person.Address.street,
+			   "postalCode" :$scope.person.Address.postalCode,
+			   "country" :$scope.person.Address.Country,
+			   "locality" : $scope.person.Address.locality,
+			   "houseNo" :$scope.person.Address.houseNo
+			}
+		var dataObj = {
+            "name":$scope.person.name,
+            "location":$scope.person.location,
+			 "address": addressObj
+        }
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        }
+        //TODO: externalize base url.
+        var res = $http.post('http://localhost:9000/info/person', dataObj, config);
+		alert('dataObj '+ dataObj.name);
+		res.success(function(data, status, headers, config) {
+            $('#respMessage').addClass('panel panel-success');
+            $('#respMessage').show();
+            $('#compileContainer').show();
+            $('#LoginContainer').hide();
+            $scope.respMessage = data.message;
+			alert('$success.respMessage '+ $scope.respMessage);
+        });
+		
+		res.error(function(data, status, headers, config) {
+            $('#respMessage').addClass('panel panel-danger');
+            $('#respMessage').show();
+            $scope.respMessage = data.message;
+			alert('$erro.respMessage '+ $scope.respMessage);
+        });
+        };
+    });
+</script>
